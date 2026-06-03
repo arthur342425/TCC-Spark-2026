@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spark - Rede Social</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <!-- Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Configuração da paleta de cores personalizada -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        lilas: '#8B5CF6',
+                        'lilas-hover': '#7C3AED',
+                        'cinza-escuro': '#1E1E2A',
+                        'cinza-medio': '#2A2A38',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Apenas animação de entrada dos painéis */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeInUp {
+            animation: fadeInUp 0.3s ease-out;
+        }
+        input:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0 30px white inset !important;
+        }
+    </style>
+</head>
+<body class="bg-cinza-escuro min-h-screen flex items-center justify-center p-4 font-sans antialiased"
+      style="background-image: radial-gradient(ellipse at 20% 20%, rgba(139, 92, 246, 0.06) 0%, transparent 50%), 
+                           radial-gradient(ellipse at 80% 80%, rgba(139, 92, 246, 0.04) 0%, transparent 50%);">
+
+    <!-- Container principal -->
+    <div class="w-full max-w-md">
+        <!-- Card -->
+        <div class="bg-white rounded-3xl shadow-2xl p-8 md:p-10 relative overflow-hidden animate-fadeInUp">
+            
+            <!-- Linha decorativa superior -->
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-transparent via-lilas to-transparent rounded-b-lg"></div>
+
+            <!-- Logo Spark (totalmente violeta, sem partículas amarelas) -->
+            <div class="text-center mb-6">
+                <div class="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-lilas to-lilas-hover rounded-2xl shadow-lg shadow-lilas/30 mb-2">
+                    <i class="fa-solid fa-bolt text-white text-2xl"></i>
+                </div>
+                <!-- Nome todo em lilás -->
+                <h1 class="text-3xl font-extrabold text-lilas tracking-tight">Spark</h1>
+                <p class="text-gray-400 text-sm mt-1">Conecte-se ao que importa</p>
+            </div>
+
+            <!-- Abas de navegação -->
+            <div class="flex bg-gray-100 rounded-xl p-1 mb-6">
+                <button id="tab-login" onclick="switchTab('login')"
+                        class="flex-1 py-2.5 rounded-lg font-semibold text-sm transition-all duration-300 bg-white text-lilas shadow-sm">
+                    <i class="fa-solid fa-right-to-bracket mr-1.5"></i> Entrar
+                </button>
+                <button id="tab-cadastro" onclick="switchTab('cadastro')"
+                        class="flex-1 py-2.5 rounded-lg font-semibold text-sm transition-all duration-300 text-gray-500 hover:text-gray-800">
+                    <i class="fa-solid fa-user-plus mr-1.5"></i> Cadastrar
+                </button>
+            </div>
+
+            <!-- Painel de Login -->
+            <div id="panel-login">
+                <form id="form-login" class="space-y-4" method="post" action="back-login.php">
+                    <!-- Nome -->
+                    <div>
+                        <label for="login-nome" class="block text-xs font-semibold text-gray-700 mb-1">Nome</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-user absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                            <input type="text" id="login-nome" name="login-nome" placeholder="Seu nome completo" required
+                                   class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:border-lilas focus:ring-4 focus:ring-lilas/10 outline-none transition-all">
+                        </div>
+                    </div>
+                    <!-- Email -->
+                    <div>
+                        <label for="login-email" class="block text-xs font-semibold text-gray-700 mb-1">Email</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-envelope absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                            <input type="email" id="login-email" name="login-email" placeholder="seu@email.com" required
+                                   class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:border-lilas focus:ring-4 focus:ring-lilas/10 outline-none transition-all">
+                        </div>
+                    </div>
+                    <!-- Senha -->
+                    <div>
+                        <label for="login-senha" class="block text-xs font-semibold text-gray-700 mb-1">Senha</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-lock absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                            <input type="password" id="login-senha" name="login-senha" placeholder="••••••••" required
+                                   class="w-full pl-10 pr-12 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:border-lilas focus:ring-4 focus:ring-lilas/10 outline-none transition-all">
+                            <button type="button" onclick="togglePassword('login-senha', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-lilas transition-colors">
+                                <i class="fa-solid fa-eye text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Botão -->
+                    <button type="submit"
+                            class="w-full py-3 bg-gradient-to-r from-lilas to-lilas-hover text-white font-bold rounded-xl shadow-md hover:shadow-xl hover:-translate-y-0.5 transform transition-all duration-200 active:scale-95">
+                        <i class="fa-solid fa-right-to-bracket mr-2"></i> Entrar na Spark
+                    </button>
+                </form>
+                <div id="feedback-login" class="mt-4 text-center text-sm font-medium hidden animate-fadeInUp"></div>
+                <p class="text-center text-xs text-gray-400 mt-4">
+                    Não tem conta? <button onclick="switchTab('cadastro')" class="text-lilas font-semibold hover:underline">Cadastre-se agora</button>
+                </p>
+            </div>
+
+            <!-- Painel de Cadastro (inicia oculto) -->
+            <div id="panel-cadastro" class="hidden">
+                <form id="form-cadastro"  class="space-y-4" action="back-cadastro-p1.php" method="post">
+                    <!-- Nome -->
+                    <div>
+                        <label for="cadastro-nome" class="block text-xs font-semibold text-gray-700 mb-1">Nome</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-user absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                            <input type="text" id="cadastro-nome" name="cad-nome" placeholder="Como quer ser chamado?" required
+                                   class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:border-lilas focus:ring-4 focus:ring-lilas/10 outline-none transition-all">
+                        </div>
+                    </div>
+                    <!-- Email -->
+                    <div>
+                        <label for="cadastro-email" class="block text-xs font-semibold text-gray-700 mb-1">Email</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-envelope absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                            <input type="email" id="cadastro-email" name="cad-email" placeholder="seu@email.com" required
+                                   class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:border-lilas focus:ring-4 focus:ring-lilas/10 outline-none transition-all">
+                        </div>
+                    </div>
+                    <!-- Senha -->
+                    <div>
+                        <label for="cadastro-senha" class="block text-xs font-semibold text-gray-700 mb-1">Senha</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-lock absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                            <input type="password" id="cadastro-senha" name="cad-senha" placeholder="Mínimo 6 caracteres" required minlength="6"
+                                   class="w-full pl-10 pr-12 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:border-lilas focus:ring-4 focus:ring-lilas/10 outline-none transition-all">
+                            <button type="button" onclick="togglePassword('cadastro-senha', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-lilas transition-colors">
+                                <i class="fa-solid fa-eye text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Botão -->
+                    <button type="submit"
+                            class="w-full py-3 bg-gradient-to-r from-lilas to-lilas-hover text-white font-bold rounded-xl shadow-md hover:shadow-xl hover:-translate-y-0.5 transform transition-all duration-200 active:scale-95">
+                        <i class="fa-solid fa-user-plus mr-2"></i> Criar conta na Spark
+                    </button>
+                </form>
+                <div id="feedback-cadastro" class="mt-4 text-center text-sm font-medium hidden animate-fadeInUp"></div>
+                <p class="text-center text-xs text-gray-400 mt-4">
+                    Já tem conta? <button onclick="switchTab('login')" class="text-lilas font-semibold hover:underline">Faça login</button>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Alternância de abas
+        function switchTab(tab) {
+            const panelLogin = document.getElementById('panel-login');
+            const panelCadastro = document.getElementById('panel-cadastro');
+            const tabLogin = document.getElementById('tab-login');
+            const tabCadastro = document.getElementById('tab-cadastro');
+            const feedbackLogin = document.getElementById('feedback-login');
+            const feedbackCadastro = document.getElementById('feedback-cadastro');
+
+            // Esconde feedbacks ao trocar
+            feedbackLogin.classList.add('hidden');
+            feedbackCadastro.classList.add('hidden');
+
+            if (tab === 'login') {
+                panelLogin.classList.remove('hidden');
+                panelCadastro.classList.add('hidden');
+                tabLogin.className = 'flex-1 py-2.5 rounded-lg font-semibold text-sm transition-all duration-300 bg-white text-lilas shadow-sm';
+                tabCadastro.className = 'flex-1 py-2.5 rounded-lg font-semibold text-sm transition-all duration-300 text-gray-500 hover:text-gray-800';
+                setTimeout(() => document.getElementById('login-nome').focus(), 150);
+            } else {
+                panelCadastro.classList.remove('hidden');
+                panelLogin.classList.add('hidden');
+                tabCadastro.className = 'flex-1 py-2.5 rounded-lg font-semibold text-sm transition-all duration-300 bg-white text-lilas shadow-sm';
+                tabLogin.className = 'flex-1 py-2.5 rounded-lg font-semibold text-sm transition-all duration-300 text-gray-500 hover:text-gray-800';
+                setTimeout(() => document.getElementById('cadastro-nome').focus(), 150);
+            }
+        }
+
+        // Mostrar/ocultar senha
+        function togglePassword(inputId, btn) {
+            const input = document.getElementById(inputId);
+            const icon = btn.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+
+        // Exibe feedback temporário
+        function showFeedback(panelId, message, type) {
+            const feedback = document.getElementById('feedback-' + panelId);
+            feedback.textContent = message;
+            feedback.className = 'mt-4 text-center text-sm font-medium animate-fadeInUp p-3 rounded-xl ' + 
+                (type === 'success' ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200');
+            feedback.classList.remove('hidden');
+            clearTimeout(feedback._timeout);
+            feedback._timeout = setTimeout(() => {
+                feedback.classList.add('hidden');
+            }, 4000);
+        }
+
+        // Valida e processa login (simulação)
+        function handleLogin(event) {
+            event.preventDefault();
+            const nome = document.getElementById('login-nome').value.trim();
+            const email = document.getElementById('login-email').value.trim();
+            const senha = document.getElementById('login-senha').value;
+
+            if (!nome || !email || !senha) {
+                showFeedback('login', '⚠️ Preencha todos os campos.', 'error');
+                return;
+            }
+            if (senha.length < 3) {
+                showFeedback('login', '⚠️ A senha deve ter pelo menos 3 caracteres.', 'error');
+                return;
+            }
+            // Aqui sua equipe fará a chamada à API real
+            console.log('Login enviado:', { nome, email, senha });
+            showFeedback('login', '✅ Bem-vindo de volta, ' + nome.split(' ')[0] + '!', 'success');
+        }
+
+        // Valida e processa cadastro (simulação)
+        function handleCadastro(event) {
+            event.preventDefault();
+            const nome = document.getElementById('cadastro-nome').value.trim();
+            const email = document.getElementById('cadastro-email').value.trim();
+            const senha = document.getElementById('cadastro-senha').value;
+
+            if (!nome || !email || !senha) {
+                showFeedback('cadastro', '⚠️ Preencha todos os campos.', 'error');
+                return;
+            }
+            if (senha.length < 6) {
+                showFeedback('cadastro', '⚠️ A senha precisa de no mínimo 6 caracteres.', 'error');
+                return;
+            }
+            if (!email.includes('@') || !email.includes('.')) {
+                showFeedback('cadastro', '⚠️ Insira um email válido.', 'error');
+                return;
+            }
+            // Aqui sua equipe fará a chamada à API real
+            console.log('Cadastro enviado:', { nome, email, senha });
+            showFeedback('cadastro', '🎉 Conta criada com sucesso! Bem-vindo, ' + nome.split(' ')[0] + '!', 'success');
+            document.getElementById('form-cadastro').reset();
+        }
+
+        // Foco inicial
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('login-nome').focus();
+        });
+
+        // Suporte extra para links inferiores (caso sejam usados como <a>)
+        document.querySelectorAll('[onclick*="switchTab"]').forEach(el => {
+            if (el.tagName === 'A') {
+                el.addEventListener('click', (e) => e.preventDefault());
+            }
+        });
+    </script>
+</body>
+</html>

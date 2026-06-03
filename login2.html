@@ -1,0 +1,247 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;1,300&family=DM+Sans:wght@300;400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+.pg{min-height:100vh;background:#1E1E2A;display:flex;align-items:center;justify-content:center;padding:2rem 1rem;font-family:'DM Sans',sans-serif}
+.card{background:#2A2A38;border-radius:24px;padding:2.5rem;width:100%;max-width:520px;border:1px solid rgba(139,92,246,0.15)}
+.steps{display:flex;align-items:center;gap:8px;margin-bottom:2rem}
+.s{width:28px;height:4px;border-radius:2px;transition:background .3s,opacity .3s}
+.s.done{background:#8B5CF6;opacity:1}
+.s.active{background:#8B5CF6;opacity:.5}
+.s.next{background:rgba(255,255,255,0.1)}
+.slabel{font-size:12px;color:rgba(255,255,255,0.3);margin-left:4px;letter-spacing:.05em}
+.logo{font-family:'Fraunces',serif;font-size:15px;font-weight:300;color:#8B5CF6;letter-spacing:.15em;text-transform:uppercase;margin-bottom:1.5rem;display:flex;align-items:center;gap:6px}
+.logo-dot{width:6px;height:6px;border-radius:50%;background:#8B5CF6}
+h1{font-family:'Fraunces',serif;font-size:26px;font-weight:300;color:#fff;line-height:1.25;margin-bottom:.5rem}
+h1 em{font-style:italic;color:#8B5CF6}
+.sub{font-size:14px;color:rgba(255,255,255,0.4);line-height:1.6;margin-bottom:1.75rem}
+.hint{font-size:12px;color:rgba(139,92,246,0.6);margin-bottom:1.75rem}
+.etapa{display:none}
+.etapa.ativa{display:block}
+.field-label{font-size:12px;font-weight:500;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem;display:flex;justify-content:space-between}
+.field-group{margin-bottom:1.25rem}
+textarea{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:13px 16px;color:#fff;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s;resize:none;height:95px;line-height:1.6}
+textarea:focus{border-color:rgba(139,92,246,0.5)}
+textarea::placeholder{color:rgba(255,255,255,0.2)}
+.divider{height:1px;background:rgba(255,255,255,0.06);margin:1.5rem 0}
+.avatar-row{display:flex;align-items:center;gap:1.25rem;margin-bottom:1.5rem}
+.avatar-circle{width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,0.04);border:1.5px dashed rgba(139,92,246,0.35);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;overflow:hidden;transition:border-color .2s,background .2s}
+.avatar-circle:hover{border-color:#8B5CF6;background:rgba(139,92,246,0.1)}
+.avatar-circle img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:none}
+.avatar-circle i{font-size:22px;color:rgba(139,92,246,0.5)}
+.avatar-info p{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.5}
+.avatar-info small{font-size:11px;color:rgba(255,255,255,0.2);display:block;margin-top:3px}
+.upload-btn{margin-top:8px;padding:5px 14px;border-radius:20px;border:1px solid rgba(139,92,246,0.35);background:transparent;color:#8B5CF6;font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:background .2s}
+.upload-btn:hover{background:rgba(139,92,246,0.1)}
+.char-count{font-size:11px;color:rgba(255,255,255,0.2);font-weight:400;text-transform:none;letter-spacing:0}
+input[type=file]{display:none}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:1.5rem}
+.chip{background:#fff;border:1.5px solid #e5e5e5;border-radius:12px;padding:14px 12px;cursor:pointer;transition:background .15s,border-color .15s,transform .1s;display:flex;flex-direction:column;align-items:flex-start;gap:8px;user-select:none}
+.chip:hover{background:#f5f0ff;border-color:#c4b5fd}
+.chip.sel{background:#ede9fe;border-color:#8B5CF6}
+.chip:active{transform:scale(0.97)}
+.chip i{font-size:20px;color:#a3a3a3;transition:color .15s}
+.chip.sel i{color:#7C3AED}
+.chip span{font-size:13px;color:#525252;font-weight:400;transition:color .15s}
+.chip.sel span{color:#4c1d95}
+.chip-check{width:16px;height:16px;border-radius:50%;border:1.5px solid #d4d4d4;margin-left:auto;display:flex;align-items:center;justify-content:center;transition:background .15s,border-color .15s;align-self:flex-end}
+.chip.sel .chip-check{background:#8B5CF6;border-color:#8B5CF6}
+.chip-check i{font-size:10px;color:#fff;opacity:0;transition:opacity .15s}
+.chip.sel .chip-check i{opacity:1}
+.counter{font-size:12px;color:rgba(255,255,255,0.25);margin-bottom:1.25rem;min-height:18px}
+.counter span{color:#8B5CF6}
+.btn{width:100%;padding:14px;border-radius:12px;border:none;background:#8B5CF6;color:#fff;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;transition:background .2s,transform .1s,opacity .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn:hover{background:#7C3AED}
+.btn:active{transform:scale(0.98)}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.skip{font-size:13px;color:rgba(255,255,255,0.25);text-align:center;display:block;margin-top:1rem;cursor:pointer;transition:color .2s}
+.skip:hover{color:rgba(255,255,255,0.5)}
+.loading-txt{font-size:13px;color:rgba(139,92,246,0.7);text-align:center;margin-top:.75rem;display:none}
+</style>
+ 
+<div class="pg">
+  <div class="card">
+ 
+    <div class="steps">
+      <div class="s active" id="s2"></div>
+      <div class="s next"   id="s3"></div>
+      <span class="slabel" id="slabel">etapa 1 de 2</span>
+    </div>
+ 
+    <div class="logo"><span class="logo-dot"></span>spark</div>
+ 
+    <!-- ETAPA 2 -->
+    <div class="etapa ativa" id="e2">
+      <h1>Olá , bem-vindo<br>à <em>Spark.</em></h1>
+      <p class="sub">Antes de entrar, dê uma cara ao seu perfil. Sua identidade aqui é a sua obra.</p>
+ 
+      <div class="avatar-row">
+        <div class="avatar-circle" onclick="document.getElementById('fileInput').click()">
+          <i class="ti ti-camera" id="camIcon" aria-hidden="true"></i>
+          <img id="previewImg" alt="foto de perfil">
+        </div>
+        <div class="avatar-info">
+          <p>Escolha uma foto que represente sua arte.</p>
+          <small>JPG, PNG ou GIF · máx. 5MB</small>
+          <button class="upload-btn" type="button" onclick="document.getElementById('fileInput').click()">
+            <i class="ti ti-upload" style="font-size:12px;vertical-align:-1px" aria-hidden="true"></i>
+            Enviar foto
+          </button>
+        </div>
+      </div>
+      <input type="file" id="fileInput" name="img_user" accept="image/*">
+ 
+      <div class="divider"></div>
+ 
+      <div class="field-group">
+        <div class="field-label">
+          bio
+          <span class="char-count" id="charCount">0 / 200</span>
+        </div>
+        <textarea id="bio" name="bio" maxlength="200" placeholder="Artista multimídia, apaixonado por cor e movimento..."></textarea>
+      </div>
+ 
+      <button class="btn" type="button" id="btnContinuar" onclick="irE3()">
+        Continuar <i class="ti ti-arrow-right" aria-hidden="true"></i>
+      </button>
+      <p class="loading-txt" id="loadingTxt">Salvando informações...</p>
+      <a class="skip" onclick="pularE2()">Pular por agora</a>
+    </div>
+ 
+    <!-- ETAPA 3 -->
+    <div class="etapa" id="e3">
+      <h1>Quais são seus<br><em>interesses?</em></h1>
+      <p class="sub">Personalize seu feed escolhendo ao menos uma área.</p>
+      <p class="hint">Selecione quantas quiser</p>
+ 
+      <div class="grid" id="grid"></div>
+ 
+      <div class="counter" id="counter"></div>
+ 
+      <button class="btn" type="button" id="btnFinal" disabled onclick="finalizar()">
+        Entrar no Spark <i class="ti ti-arrow-right" aria-hidden="true"></i>
+      </button>
+      <a class="skip" onclick="finalizarSemInteresses()">Pular por agora</a>
+    </div>
+ 
+  </div>
+</div>
+ 
+<script>
+function avancarEtapa3(){
+  document.getElementById('e2').className = 'etapa';
+  document.getElementById('e3').className = 'etapa ativa';
+  document.getElementById('s2').className = 's done';
+  document.getElementById('s3').className = 's active';
+  document.getElementById('slabel').textContent = 'etapa 2 de 2';
+}
+ 
+async function irE3(){
+  const btn = document.getElementById('btnContinuar');
+  const loading = document.getElementById('loadingTxt');
+ 
+  btn.disabled = true;
+  loading.style.display = 'block';
+ 
+  const formData = new FormData();
+  formData.append('bio', document.getElementById('bio').value);
+ 
+  const fileInput = document.getElementById('fileInput');
+  if(fileInput.files[0]){
+    formData.append('img_user', fileInput.files[0]);
+  }
+ 
+  try {
+    await fetch('back-cadastro-p2.php', { method: 'POST', body: formData });
+  } catch(e) {
+    console.error('Erro ao enviar etapa 2:', e);
+  }
+ 
+  btn.disabled = false;
+  loading.style.display = 'none';
+  avancarEtapa3();
+}
+ 
+async function pularE2(){
+  await fetch('back-cadastro-p2.php', { method: 'POST', body: new FormData() });
+  avancarEtapa3();
+}
+ 
+document.getElementById('bio').addEventListener('input',function(){
+  const n = this.value.length;
+  const cc = document.getElementById('charCount');
+  cc.textContent = n + ' / 200';
+  cc.style.color = n > 180 ? '#8B5CF6' : 'rgba(255,255,255,0.2)';
+});
+ 
+document.getElementById('fileInput').addEventListener('change',function(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    const img = document.getElementById('previewImg');
+    img.src = ev.target.result;
+    img.style.display = 'block';
+    document.getElementById('camIcon').style.display = 'none';
+  };
+  r.readAsDataURL(file);
+});
+ 
+const cats = [
+  {icon:'ti-brush',label:'Artes visuais'},
+  {icon:'ti-music',label:'Música'},
+  {icon:'ti-camera',label:'Fotografia'},
+  {icon:'ti-writing',label:'Escrita'},
+  {icon:'ti-device-tv',label:'Cinema'},
+  {icon:'ti-needle-thread',label:'Moda'},
+  {icon:'ti-building',label:'Arquitetura'},
+  {icon:'ti-layout',label:'Design'},
+  {icon:'ti-masks-theater',label:'Teatro'},
+  {icon:'ti-3d-cube-sphere',label:'3D & CGI'},
+  {icon:'ti-code',label:'Arte digital'},
+  {icon:'ti-palette',label:'Ilustração'},
+  {icon:'ti-bulb',label:'Conceitual'},
+  {icon:'ti-vinyl',label:'Cultura urbana'},
+];
+ 
+const grid = document.getElementById('grid');
+const selected = new Set();
+ 
+cats.forEach((c,i)=>{
+  const el = document.createElement('div');
+  el.className = 'chip';
+  el.innerHTML = `<i class="ti ${c.icon}" aria-hidden="true"></i><span>${c.label}</span><div class="chip-check"><i class="ti ti-check"></i></div>`;
+  el.addEventListener('click',()=>{
+    if(selected.has(i)){selected.delete(i);el.classList.remove('sel')}
+    else{selected.add(i);el.classList.add('sel')}
+    const n = selected.size;
+    const counter = document.getElementById('counter');
+    counter.innerHTML = n===0 ? '' : `<span>${n}</span> categori${n===1?'a':'as'} selecionada${n===1?'':'s'}`;
+    document.getElementById('btnFinal').disabled = n===0;
+  });
+  grid.appendChild(el);
+});
+ 
+async function finalizar(){
+  const formData = new FormData();
+  formData.append('finalizar', '1');
+
+  try {
+    const res = await fetch('back-cadastro-p2.php', { method: 'POST', body: formData });
+    if(res.ok) window.location.href = 'index.php';
+  } catch(e) {
+    console.error('Erro ao finalizar:', e);
+  }
+}
+
+async function finalizarSemInteresses(){
+  const formData = new FormData();
+  formData.append('finalizar', '1');
+
+  try {
+    const res = await fetch('back-cadastro-p2.php', { method: 'POST', body: formData });
+    if(res.ok) window.location.href = 'index.php';
+  } catch(e) {
+    console.error('Erro ao finalizar:', e);
+  }
+}
+</script>

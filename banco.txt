@@ -1,0 +1,71 @@
+CREATE TABLE tipos_user (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  nome_tipo VARCHAR(50)
+);
+
+CREATE TABLE usuario (
+  id_usuario INT PRIMARY KEY AUTO_INCREMENT,
+  nome_usuario VARCHAR(100) NOT NULL UNIQUE,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  senha_hash VARCHAR(255) NOT NULL,
+  bio VARCHAR(500),
+  foto_perfil_url VARCHAR(500),
+  idtipos_user INT,
+  ativo BOOLEAN DEFAULT TRUE,
+  criado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
+  pais VARCHAR(100)
+);
+
+CREATE TABLE Pastas (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  idusuario INT,
+  nome VARCHAR(100),
+  criado_em DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Tipos_midia (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  tipo_midia VARCHAR(50)
+);
+
+CREATE TABLE midias (
+  id_midia INT PRIMARY KEY AUTO_INCREMENT,
+  idusuario INT,
+  idTipos_midia INT,
+  titulo VARCHAR(255),
+  descricao VARCHAR(1000),
+  midia_url VARCHAR(500),
+  criado_em DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE midias_em_pasta (
+  idPastas INT,
+  idmidias INT,
+  posicao INT,
+  PRIMARY KEY (idPastas, idmidias)
+);
+
+CREATE TABLE comentarios (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  idusuario INT,
+  idmidias INT,
+  texto VARCHAR(1000),
+  criado_em DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+ALTER TABLE usuario ADD FOREIGN KEY (idtipos_user) REFERENCES tipos_user (id);
+ALTER TABLE Pastas ADD FOREIGN KEY (idusuario) REFERENCES usuario (id_usuario);
+ALTER TABLE midias ADD FOREIGN KEY (idusuario) REFERENCES usuario (id_usuario);
+ALTER TABLE midias ADD FOREIGN KEY (idTipos_midia) REFERENCES Tipos_midia (id);
+ALTER TABLE midias_em_pasta ADD FOREIGN KEY (idPastas) REFERENCES Pastas (id);
+ALTER TABLE midias_em_pasta ADD FOREIGN KEY (idmidias) REFERENCES midias (id_midia);
+ALTER TABLE comentarios ADD FOREIGN KEY (idusuario) REFERENCES usuario (id_usuario);
+ALTER TABLE comentarios ADD FOREIGN KEY (idmidias) REFERENCES midias (id_midia);
+
+/////////////////////
+DEPOIS DE EXECUTAR O CODIGO A CIMA EXECUTE O SEGUINTE CODIGO DENTRO DA TABELA tipos_user
+INSERT INTO tipos_user
+VALUES (1, "admin");'
+
+INSERT INTO tipos_user
+VALUES (2, "usuario");'
