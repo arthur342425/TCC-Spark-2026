@@ -1,0 +1,30 @@
+TRIUMPH — como ativar a fonte comercial
+=======================================
+
+O site pede a Triumph em primeiro lugar e cai na Archivo enquanto ela
+não estiver aqui. A Archivo é a grotesca geométrica mais próxima
+disponível de graça: mesma largura, mesmos terminais retos. Com o eixo
+variável de largura em 115 ela fica bem perto da proporção da Triumph.
+
+Se você tiver a licença da Triumph, largue os arquivos NESTA pasta com
+exatamente estes nomes:
+
+    triumph-regular.woff2   (ou .woff, ou .otf)
+    triumph-medium.woff2
+    triumph-bold.woff2
+
+Pronto — a fonte assume o site inteiro sozinha, sem editar nada.
+
+Por que os nomes importam
+-------------------------
+Quem monta o @font-face é a função fontes_locais(), no config/config.php.
+Ela procura por esses nomes e só declara a fonte se o arquivo existir de
+verdade. Se declarássemos sempre, o navegador tentaria baixar nove
+arquivos inexistentes a cada visita — nove erros 404 por página.
+
+Formatos
+--------
+Prefira .woff2: é o menor e todo navegador atual lê. O .otf funciona,
+mas costuma pesar 3 a 5 vezes mais. Para converter, qualquer conversor
+de fontes online resolve — só confira se a licença permite uso em web
+(webfont), que costuma ser uma licença separada da de desktop.
